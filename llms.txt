@@ -1,0 +1,27 @@
+# Lenka Tumová – laktační poradkyně
+
+## O webu
+Tento web prezentuje služby certifikované laktační poradkyně Lenky Tumové z Plzeňského kraje.
+
+## Provozovatel
+- **Jméno:** Lenka Tumová
+- **Profese:** Certifikovaná laktační poradkyně
+- **IČO:** 09207791
+- **Sídlo:** Stupno 307, Břasy, 338 24
+- **Telefon:** +420 777 595 065
+- **E-mail:** poradkyne@lenkatumova.cz
+
+## Nabízené služby
+- Předporodní příprava na kojení
+- Podpora při kojení (bolest, ragády, málo mléka, technika přiložení)
+- Poradenství při nošení dětí v šátku a nosítku
+- Dlouhodobé kojení a tandemové kojení
+- Harmonický přechod k příkrmům (BLW i tradiční metoda)
+- Kojení a spánek – noční kojení, spánkové asociace
+
+## Oblast působnosti
+Plzeňský kraj – osobní konzultace, celá ČR – online konzultace přes videohovor.
+
+## Stránky webu
+- / – Hlavní strana (hero, služby, o mně, reference, FAQ, kontakt)
+- /sluzby.html – Detailní popis všech služeb

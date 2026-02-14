@@ -217,6 +217,44 @@ ul {
   margin-left: 8px;
 }
 
+/* Rychlé kontaktní ikonky vedle hamburgeru – skryté na desktopu */
+.nav-mobile-cta {
+  display: none;
+  gap: 8px;
+  align-items: center;
+}
+
+.nav-mobile-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(184, 115, 127, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--rose);
+  flex-shrink: 0;
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+}
+
+.nav-mobile-btn:hover,
+.nav-mobile-btn:active {
+  background: var(--rose);
+  color: var(--white);
+  transform: scale(1.08);
+}
+
+#main-header.scrolled .nav-mobile-btn {
+  background: rgba(255, 255, 255, 0.6);
+}
+
+/* Na sluzby.html je header vždy světlý */
+.sluzby-page .nav-mobile-btn {
+  background: var(--white);
+  border-color: rgba(184, 115, 127, 0.3);
+}
+
 /* hamburger – hidden on desktop */
 .hamburger {
   display: none;
@@ -232,13 +270,19 @@ ul {
   display: block;
   width: 24px;
   height: 2px;
-  background: var(--text-dark);
-  /* Tmavá pro kontrast */
+  background: var(--white);
+  /* Bílá – viditelná na tmavém hero */
   border-radius: 2px;
   transition: background 0.3s;
 }
 
 #main-header.scrolled .hamburger span {
+  background: var(--text-dark);
+  /* Tmavá po scrollování na světlém pozadí */
+}
+
+/* Na sluzby.html je header vždy světlý → hamburger tmavý */
+.sluzby-page #main-header .hamburger span {
   background: var(--text-dark);
 }
 
@@ -448,6 +492,10 @@ ul {
   .hamburger {
     display: flex;
   }
+
+  .nav-mobile-cta {
+    display: flex;
+  }
 }
 
 /* Mobile */
@@ -479,17 +527,21 @@ ul {
   }
 }
 
-/* Mobile nav (otevřené menu) */
+/* Mobile nav (otevřené menu) – position: fixed aby drželo i při scrollu */
 #top-nav.open {
   display: flex;
   flex-direction: column;
-  position: absolute;
+  position: fixed;
   top: var(--header-h);
   left: 0;
   width: 100%;
-  background: rgba(255, 255, 255, 0.97);
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(8px);
   padding: 16px 5%;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-height: calc(100vh - var(--header-h));
+  overflow-y: auto;
+  z-index: 999;
 }
 
 #top-nav.open a {
@@ -533,7 +585,7 @@ ul {
 }
 
 .section-subheading--light {
-  color: rgba(255, 255, 255, 0.82);
+  color: rgba(255, 255, 255, 0.85);
 }
 
 /* ============================================================
@@ -715,7 +767,7 @@ ul {
 }
 
 .empathy-list li::before {
-  content: '—';
+  content: '♥';
   position: absolute;
   left: 0;
   color: var(--rose);
@@ -886,7 +938,7 @@ ul {
    PROCESS SECTION
    ============================================================ */
 .process {
-  background: #4a3438;
+  background: linear-gradient(135deg, #7a5560 0%, #9b7080 100%);
   padding: 90px 0;
 }
 
@@ -916,8 +968,8 @@ ul {
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.18);
-  border: 2px solid rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.6);
   color: var(--white);
   font-family: 'Lora', serif;
   font-size: 22px;
@@ -940,12 +992,12 @@ ul {
 
 .step-body p {
   font-size: 14px;
-  color: rgba(255, 255, 255, 0.82);
+  color: rgba(255, 255, 255, 0.85);
   line-height: 1.7;
 }
 
 .step-arrow {
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 0.6);
   font-size: 28px;
   margin-top: 14px;
   flex-shrink: 0;
@@ -968,69 +1020,109 @@ ul {
 }
 
 /* ============================================================
-   VIDEO CARDS
+   VIDEO SECTION - ZIG-ZAG LAYOUT
    ============================================================ */
-.video-cards {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  padding-top: 90px;
+.video-section {
+  background: var(--white);
+  padding: 90px 0 0 0;
 }
 
-.video-card-item {
+.video-section-inner {
+  width: 100%;
+}
+
+.video-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  min-height: 480px;
+}
+
+.video-row--reverse {
+  direction: rtl;
+}
+
+.video-row--reverse>* {
+  direction: ltr;
+}
+
+.video-content {
   position: relative;
   overflow: hidden;
   height: 480px;
+  background: var(--section-bg);
 }
 
-.video-card-item video {
-  position: absolute;
-  top: 0;
-  left: 0;
+.video-content video {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  z-index: 0;
+  display: block;
 }
 
-.video-card-overlay {
+.video-overlay {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(45, 26, 30, 0.62);
+  background: rgba(45, 26, 30, 0.5);
   z-index: 1;
+  pointer-events: none;
 }
 
-.video-card-text {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 40px 44px;
-  z-index: 2;
+.video-text {
+  padding: 60px 72px;
+  background: linear-gradient(135deg, #6b4f54 0%, #8b6b70 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  justify-content: center;
+  height: 100%;
 }
 
-.video-card-text p {
+.video-text p {
   font-family: 'Lora', Georgia, serif;
-  font-size: 20px;
-  font-style: italic;
+  font-size: 22px;
+  font-weight: 500;
   color: var(--white);
-  line-height: 1.6;
-  margin: 0 0 8px;
+  line-height: 1.55;
+  margin: 0;
 }
 
-.video-card-text p:last-child {
-  margin-bottom: 0;
+.video-text p:first-child {
+  font-size: 28px;
+  font-weight: 600;
+  border-left: 3px solid rgba(255, 255, 255, 0.5);
+  padding-left: 20px;
+}
+
+.video-text p:last-child {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.8);
+  padding-left: 23px;
 }
 
 @media (max-width: 980px) {
-  .video-cards {
+
+  .video-row,
+  .video-row--reverse {
     grid-template-columns: 1fr;
+    direction: ltr;
   }
 
-  .video-card-item {
-    height: 380px;
+  .video-content {
+    height: 360px;
+  }
+
+  .video-text {
+    padding: 40px 32px;
+  }
+
+  .video-text p {
+    font-size: 18px;
   }
 }
 
@@ -1459,6 +1551,18 @@ ul {
   line-height: 1.6;
 }
 
+/* Honeypot – skryto před uživateli, viditelné pro boty */
+.form-honeypot {
+  position: absolute;
+  left: -9999px;
+  top: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
 .form-error {
   font-size: 12px;
   color: #c0392b;
@@ -1488,42 +1592,37 @@ ul {
 
 .instagram-inner {
   max-width: var(--max-width);
-  width: 94%;
+  width: 90%;
   margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
+  text-align: center;
 }
 
-/* Styly pro vlastní Instagram carousel */
+.instagram-carousel {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
 .instagram-gallery {
   display: flex;
   gap: 20px;
   overflow-x: auto;
   scroll-behavior: smooth;
-  padding-bottom: 20px;
-  /* Scrollbar */
+  padding-bottom: 4px;
   -webkit-overflow-scrolling: touch;
+  flex: 1;
 }
 
-/* Skrytí scrollbaru (volitelné pro čistší vzhled) */
 .instagram-gallery::-webkit-scrollbar {
-  height: 8px;
+  display: none;
 }
 
-.instagram-gallery::-webkit-scrollbar-track {
-  background: rgba(184, 115, 127, 0.1);
-  border-radius: 4px;
-}
-
-.instagram-gallery::-webkit-scrollbar-thumb {
-  background: var(--rose);
-  border-radius: 4px;
+.instagram-gallery {
+  scrollbar-width: none;
 }
 
 .instagram-item {
-  flex: 0 0 300px;
-  /* Pevná šířka karty */
+  flex: 0 0 240px;
   height: 300px;
   border-radius: 12px;
   overflow: hidden;
@@ -1533,11 +1632,13 @@ ul {
   transition: transform 0.3s, box-shadow 0.3s;
 }
 
-.instagram-item img {
+.instagram-item img,
+.instagram-item video {
   width: 100%;
   height: 100%;
   object-fit: cover;
   transition: transform 0.5s ease;
+  display: block;
 }
 
 .instagram-item:hover {
@@ -1545,16 +1646,9 @@ ul {
   box-shadow: 0 8px 24px rgba(184, 115, 127, 0.25);
 }
 
-.instagram-item:hover img {
+.instagram-item:hover img,
+.instagram-item:hover video {
   transform: scale(1.05);
-}
-
-.loading-text {
-  text-align: center;
-  width: 100%;
-  color: var(--text-light);
-  font-style: italic;
-  padding: 20px;
 }
 
 /* ============================================================
@@ -1592,25 +1686,136 @@ ul {
   margin: 0;
 }
 
+/* ============================================================
+   SLUZBY PAGE – SERVICE CARDS (editorial redesign)
+   ============================================================ */
 .sluzby-detail {
   display: flex;
   flex-direction: column;
   gap: 0;
 }
 
+/* No height limit on services page */
 .sluzby-detail .service-card {
   max-height: none;
 }
 
+/* Photo: relative container, min-height floor */
+.sluzby-detail .service-card-photo {
+  position: relative;
+  min-height: 480px;
+  overflow: hidden;
+}
+
+/* Absolute img so it never drives the container height –
+   the text column always controls row height */
+.sluzby-detail .service-card-photo > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Small icon in bottom-right corner of photo */
+.sluzby-detail .service-card-icon-corner {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  width: 52px;
+  height: 52px;
+  background: rgba(255, 255, 255, 0.84);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 2px 12px rgba(45, 26, 30, 0.14);
+}
+
+.sluzby-detail .service-card-icon-corner img {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+  display: block;
+}
+
+/* Content panel */
 .sluzby-detail .service-card-body {
-  padding: 60px 52px;
+  padding: 64px 60px;
+  justify-content: flex-start;
+}
+
+/* Alternating tinted panel */
+.sluzby-detail .service-card--tinted .service-card-body {
+  background: var(--rose-pale);
+}
+
+/* Heading: editorial left-border accent */
+.sluzby-detail .service-card-body h3 {
+  font-size: 30px;
+  font-weight: 600;
+  color: var(--brown);
+  border-left: 3px solid var(--rose);
+  padding-left: 20px;
+  margin-bottom: 24px;
+  line-height: 1.3;
+}
+
+/* Nošení – anchor image to top so bottom crops naturally */
+#noseni .service-card-photo img {
+  object-position: top center;
+}
+
+/* Lead: prominent italic */
+.sluzby-detail .service-card-lead {
+  font-size: 17px;
+  font-style: italic;
+  color: var(--text-dark);
+  line-height: 1.72;
+  margin-bottom: 22px;
+}
+
+/* Body text: comfortable reading */
+.sluzby-detail .service-card-text {
+  font-size: 15px;
+  color: var(--text-light);
+  line-height: 1.85;
+  margin-bottom: 16px;
+}
+
+/* Subheading: soft label */
+.sluzby-detail .service-card-subheading {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--rose);
+  margin-top: 24px;
+  margin-bottom: 14px;
+}
+
+/* Bullet list: more breathing room */
+.sluzby-detail .service-card-body ul {
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.sluzby-detail .service-card-body ul li {
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+/* Closing paragraph */
+.sluzby-detail .service-card-closing {
+  margin-top: 20px;
 }
 
 /* ============================================================
    FOOTER
    ============================================================ */
 .site-footer {
-  background: var(--brown);
+  background: #3d2530;
 }
 
 /* --- Horní část --- */
@@ -1790,6 +1995,20 @@ ul {
     max-height: 280px;
   }
 
+  /* Sluzby page overrides */
+  .sluzby-detail .service-card-body {
+    padding: 40px 28px;
+  }
+
+  .sluzby-detail .service-card-photo {
+    max-height: 320px;
+    min-height: 0;
+  }
+
+  .sluzby-detail .service-card-body h3 {
+    font-size: 24px;
+  }
+
   .about-banner {
     grid-template-columns: 1fr;
   }
@@ -1850,6 +2069,15 @@ ul {
   .footer-brand {
     grid-column: 1 / -1;
   }
+
+  /* Sluzby hero na tabletu */
+  .sluzby-hero h1 {
+    font-size: 34px;
+  }
+
+  .sluzby-hero {
+    padding: 110px 0 52px;
+  }
 }
 
 @media (max-width: 600px) {
@@ -1867,7 +2095,7 @@ ul {
 
   /* Responsive Instagram */
   .instagram-item {
-    flex: 0 0 250px;
+    flex: 0 0 200px;
     height: 250px;
   }
 
@@ -1891,5 +2119,50 @@ ul {
     flex-direction: column;
     align-items: flex-start;
     gap: 10px;
+  }
+
+  /* Sekce – méně vertikálního paddingu na mobilu */
+  .empathy,
+  .benefits,
+  .testimonials,
+  .faq,
+  .contact,
+  .instagram-feed {
+    padding: 60px 0;
+  }
+
+  .process {
+    padding: 60px 0;
+  }
+
+  /* About banner na mobilu */
+  .about-banner-text {
+    padding: 36px 20px;
+  }
+
+  .about-banner-photo {
+    max-height: 260px;
+  }
+
+  /* Sluzby hero na mobilu */
+  .sluzby-hero {
+    padding: 100px 0 48px;
+  }
+
+  .sluzby-hero h1 {
+    font-size: 28px;
+  }
+
+  .sluzby-hero-lead {
+    font-size: 15px;
+  }
+
+  /* Services – méně paddingu na mobilu */
+  .services-inner {
+    padding: 60px 0 36px;
+  }
+
+  .services-icon-grid {
+    padding-bottom: 60px;
   }
 }

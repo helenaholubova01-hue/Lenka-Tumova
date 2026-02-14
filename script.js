@@ -68,6 +68,10 @@
       valid = false;
     }
 
+    // Honeypot – pokud bot vyplnil skryté pole, formulář tiše zahodíme
+    var honeypot = form.querySelector('#website');
+    if (honeypot && honeypot.value.trim() !== '') { return; }
+
     if (valid) {
       var btn = form.querySelector('.btn-submit');
       btn.textContent = 'Odesílám…';
@@ -147,6 +151,57 @@
 })();
 
 // ============================================================
+// Instagram galerie – carousel šipky + automatické přesouvání
+// ============================================================
+(function () {
+  var gallery = document.getElementById('instagram-gallery');
+  if (!gallery) return;
+
+  var prevBtn = document.querySelector('.instagram-btn--prev');
+  var nextBtn = document.querySelector('.instagram-btn--next');
+
+  function getItemWidth() {
+    var item = gallery.querySelector('.instagram-item');
+    if (!item) return 260;
+    return item.offsetWidth + 20; // šířka položky + gap
+  }
+
+  function scrollNext() {
+    var maxScroll = gallery.scrollWidth - gallery.clientWidth;
+    if (gallery.scrollLeft >= maxScroll - 4) {
+      gallery.scrollTo({ left: 0, behavior: 'smooth' });
+    } else {
+      gallery.scrollBy({ left: getItemWidth(), behavior: 'smooth' });
+    }
+  }
+
+  var autoTimer = setInterval(scrollNext, 3500);
+
+  function pauseAuto() { clearInterval(autoTimer); }
+  function resumeAuto() { autoTimer = setInterval(scrollNext, 3500); }
+
+  gallery.addEventListener('mouseenter', pauseAuto);
+  gallery.addEventListener('mouseleave', resumeAuto);
+  gallery.addEventListener('touchstart', pauseAuto, { passive: true });
+  gallery.addEventListener('touchend', resumeAuto, { passive: true });
+
+  if (prevBtn) {
+    prevBtn.addEventListener('click', function () {
+      pauseAuto();
+      gallery.scrollBy({ left: -getItemWidth(), behavior: 'smooth' });
+      resumeAuto();
+    });
+  }
+  if (nextBtn) {
+    nextBtn.addEventListener('click', function () {
+      pauseAuto();
+      gallery.scrollBy({ left: getItemWidth(), behavior: 'smooth' });
+      resumeAuto();
+    });
+  }
+})();
+
+// ============================================================
 // Instagram Feed Fetcher (Custom/Free)
 // ============================================================
 (function () {
@@ -155,7 +210,7 @@
 
   // JSON feed z Behold.so (veřejně dostupný endpoint pro tento feed ID)
   // Toto obchází nutnost placeného widgetu pro slider
-  const feedUrl = 'https://feeds.behold.so/gY2ggOcPpBUhfDuBT3K8';
+  const feedUrl = 'https://feeds.behold.so/cuk6vi2SUC6zHi4xKt1e';
 
   fetch(feedUrl)
     .then(function (response) {
@@ -171,13 +226,6 @@
       }
 
       data.posts.forEach(function (post) {
-        // Zkusit najít nejlepší velikost
-        let imgUrl = post.mediaUrl;
-        if (post.sizes) {
-          if (post.sizes.large) imgUrl = post.sizes.large.mediaUrl;
-          else if (post.sizes.medium) imgUrl = post.sizes.medium.mediaUrl;
-        }
-
         const link = document.createElement('a');
         link.href = post.permalink || '#';
         link.target = '_blank';
@@ -185,12 +233,30 @@
         link.className = 'instagram-item';
         link.title = post.caption || 'Instagram post';
 
-        const img = document.createElement('img');
-        img.src = imgUrl;
-        img.alt = post.caption ? post.caption.substring(0, 80) + '...' : 'Instagram photo';
-        img.loading = 'lazy';
+        if (post.mediaType === 'VIDEO') {
+          // Video post – přehrát přímo v gridu
+          const video = document.createElement('video');
+          video.src = post.mediaUrl;
+          video.autoplay = true;
+          video.muted = true;
+          video.loop = true;
+          video.playsInline = true;
+          video.setAttribute('playsinline', '');
+          link.appendChild(video);
+        } else {
+          // Foto post – najít nejlepší rozlišení
+          let imgUrl = post.mediaUrl;
+          if (post.sizes) {
+            if (post.sizes.large) imgUrl = post.sizes.large.mediaUrl;
+            else if (post.sizes.medium) imgUrl = post.sizes.medium.mediaUrl;
+          }
+          const img = document.createElement('img');
+          img.src = imgUrl;
+          img.alt = post.caption ? post.caption.substring(0, 80) + '...' : 'Instagram photo';
+          img.loading = 'lazy';
+          link.appendChild(img);
+        }
 
-        link.appendChild(img);
         container.appendChild(link);
       });
     })
