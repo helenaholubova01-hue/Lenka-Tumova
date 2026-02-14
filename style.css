@@ -217,6 +217,16 @@ ul {
   margin-left: 8px;
 }
 
+/* Oprava ikonek v otevřeném menu */
+#top-nav.open .nav-icon-link {
+  border-radius: 50%;
+  /* Perfektně kulaté */
+  width: 40px;
+  height: 40px;
+  padding: 8px;
+  flex-shrink: 0;
+}
+
 /* Rychlé kontaktní ikonky vedle hamburgeru – skryté na desktopu */
 .nav-mobile-cta {
   display: none;
@@ -264,6 +274,8 @@ ul {
   border: none;
   cursor: pointer;
   padding: 4px;
+  position: relative;
+  z-index: 10;
 }
 
 .hamburger span {
@@ -293,7 +305,8 @@ ul {
   min-height: 110vh;
   background-image: url('Obrazky/laktace1.jpg');
   background-size: cover;
-  background-position: center top;
+  background-position: 70% top;
+  /* Posunuto doprava, aby byla Lenka více vidět */
   background-repeat: no-repeat;
   display: flex;
   align-items: center;
@@ -318,26 +331,30 @@ ul {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 16px;
+  gap: 14px;
 }
 
 .hero-subtitle-top {
   font-family: 'Open Sans', sans-serif;
-  font-size: 22px;
+  font-size: 18px;
+  /* Zmenšeno z 22px */
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 1px;
   line-height: 1.4;
   color: var(--white);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .hero-heading {
   font-family: 'Lora', Georgia, serif;
-  font-size: 45px;
-  font-weight: 400;
-  line-height: 1.4;
-  letter-spacing: 1px;
+  font-size: 36px;
+  /* Zmenšeno z 45px */
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: 0.5px;
   color: var(--white);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .btn-primary {
@@ -375,7 +392,8 @@ ul {
   max-width: var(--max-width);
   width: 80%;
   margin: 0 auto;
-  padding: 80px 0 48px;
+  padding: 80px 0 0;
+  /* Odstraněn spodní padding */
 }
 
 .services .service-cards {
@@ -391,7 +409,6 @@ ul {
   grid-template-columns: repeat(3, 1fr);
   gap: 40px 48px;
   margin-top: 8px;
-  padding-bottom: 80px;
 }
 
 .service-icon-item {
@@ -468,7 +485,11 @@ ul {
   }
 
   .hero-heading {
-    font-size: 36px;
+    font-size: 32px;
+  }
+
+  .hero-subtitle-top {
+    font-size: 16px;
   }
 
   .blurbs {
@@ -500,21 +521,48 @@ ul {
 
 /* Mobile */
 @media (max-width: 600px) {
+  .hero {
+    min-height: 100vh;
+    /* Přes celou výšku obrazovky */
+    background-image: url('Obrazky/laktace2.jpg');
+    /* Speciální oříznutá fotka pro mobil */
+    background-position: center center;
+    /* Vycentrováno */
+    background-size: cover;
+    /* Pokrytí celé plochy */
+    align-items: flex-end;
+    /* Text ke spodnímu okraji - přebije center z desktopu */
+  }
+
+  .hero-inner {
+    display: flex;
+    /* Nutné pro justify-content */
+    flex-direction: column;
+    /* Vertikální layout */
+    justify-content: flex-end;
+    /* Text ke spodnímu okraji */
+    padding-bottom: 80px;
+    /* Mezera 80px od spodku */
+    padding-top: calc(var(--header-h) + 2vh);
+    /* Menší padding nahoře, přizpůsobí se výšce obrazovky */
+  }
+
   .hero-heading {
-    font-size: 28px;
+    font-size: 26px;
   }
 
   .hero-subtitle-top {
-    font-size: 17px;
+    font-size: 15px;
   }
 
   .btn-primary {
-    font-size: 17px;
+    font-size: 16px;
   }
 
   .services-icon-grid {
     grid-template-columns: 1fr;
-    gap: 28px;
+    gap: 48px;
+    /* Větší mezera pro lepší přehlednost */
   }
 
   .blurbs {
@@ -535,10 +583,11 @@ ul {
   top: var(--header-h);
   left: 0;
   width: 100%;
-  background: rgba(255, 255, 255, 0.98);
+  background: var(--rose-pale);
+  /* Světle růžová z palety místo bílé */
   backdrop-filter: blur(8px);
-  padding: 16px 5%;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 20px 5%;
+  box-shadow: 0 4px 12px rgba(184, 115, 127, 0.15);
   max-height: calc(100vh - var(--header-h));
   overflow-y: auto;
   z-index: 999;
@@ -546,13 +595,16 @@ ul {
 
 #top-nav.open a {
   color: var(--text-dark);
-  padding: 10px 0;
-  border-bottom: 1px solid #eee;
+  padding: 14px 0;
+  /* Větší padding pro lepší čitelnost */
+  border-bottom: 1px solid rgba(184, 115, 127, 0.15);
+  /* Jemnější border v růžové */
 }
 
 #top-nav.open ul {
   flex-direction: column;
-  gap: 0;
+  gap: 8px;
+  /* Mezera mezi položkami */
 }
 
 /* ============================================================
@@ -1038,12 +1090,13 @@ ul {
   min-height: 480px;
 }
 
-.video-row--reverse {
-  direction: rtl;
+/* Reverse layout pro střídání na desktopu */
+.video-row--reverse .video-content {
+  order: 2;
 }
 
-.video-row--reverse>* {
-  direction: ltr;
+.video-row--reverse .video-text {
+  order: 1;
 }
 
 .video-content {
@@ -1109,8 +1162,19 @@ ul {
 
   .video-row,
   .video-row--reverse {
+    display: grid;
     grid-template-columns: 1fr;
-    direction: ltr;
+  }
+
+  /* Na mobilu: všude video nahoře, text dole */
+  .video-row .video-content,
+  .video-row--reverse .video-content {
+    order: 1;
+  }
+
+  .video-row .video-text,
+  .video-row--reverse .video-text {
+    order: 2;
   }
 
   .video-content {
@@ -1123,6 +1187,10 @@ ul {
 
   .video-text p {
     font-size: 18px;
+  }
+
+  .video-text p:first-child {
+    font-size: 24px;
   }
 }
 
@@ -1161,7 +1229,8 @@ ul {
 
 .testimonials-inner {
   max-width: var(--max-width);
-  width: 80%;
+  width: 90%;
+  /* Zvětšeno z 80% pro více prostoru */
   margin: 0 auto;
 }
 
@@ -1169,6 +1238,10 @@ ul {
   display: flex;
   align-items: center;
   gap: 16px;
+  overflow: hidden;
+  /* Zabrání přetékání karet ven */
+  padding: 0 8px;
+  /* Malý padding, aby karty nebyly úplně u okraje */
 }
 
 .testimonial-track {
@@ -1224,7 +1297,9 @@ ul {
 
 @media (max-width: 600px) {
   .testimonial-card {
-    flex: 0 0 300px;
+    flex: 0 0 85%;
+    /* Zvětšeno z 300px, aby nebyly oseknuté */
+    min-width: 280px;
   }
 
   .carousel-btn {
@@ -1709,7 +1784,7 @@ ul {
 
 /* Absolute img so it never drives the container height –
    the text column always controls row height */
-.sluzby-detail .service-card-photo > img {
+.sluzby-detail .service-card-photo>img {
   position: absolute;
   inset: 0;
   width: 100%;
