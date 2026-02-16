@@ -393,7 +393,11 @@ ul {
   width: 80%;
   margin: 0 auto;
   padding: 80px 0 0;
-  /* Odstraněn spodní padding */
+}
+
+#poradenstvi {
+  overflow: visible;
+  padding-bottom: 90px;
 }
 
 .services .service-cards {
@@ -1743,6 +1747,7 @@ ul {
 
 .sluzby-hero .hero-subtitle-top {
   color: var(--rose);
+  text-shadow: none;
 }
 
 .sluzby-hero h1 {
@@ -2234,10 +2239,10 @@ ul {
 
   /* Services – méně paddingu na mobilu */
   .services-inner {
-    padding: 60px 0 36px;
+    padding: 60px 0 0;
   }
 
-  .services-icon-grid {
+  #poradenstvi {
     padding-bottom: 60px;
   }
 }
